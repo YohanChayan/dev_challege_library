@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class CategoryController extends Controller
 {
@@ -37,11 +39,15 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
+            'name' => 'required|regex:/^([^0-9]*)$/',  //No Numbers
             'description' => 'required',
         ]);
 
-        dd('success', $request);
+        $newCategory = new Category( $request->except('_token') );
+        $newCategory->save();
+
+        Alert::toast('Nueva categoria agregada correctamente!', 'success');
+        return redirect('categories');
     }
 
     /**
@@ -65,10 +71,12 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
 
-        if($category)
+        if(isset($category))
             return view('categories.create-edit')->with('category', $category);
-        else
+        else{
+            Alert::toast('Recurso no encontrado!', 'error');
             return redirect()->back();
+        }
 
 
     }
@@ -83,10 +91,23 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|not_regex:/^[0-9]+$/', //No Numbers
+            'name' => 'required|regex:/^([^0-9]*)$/', //No Numbers
             'description' => 'required',
         ]);
-        dd('update success', $request);
+
+        $category = Category::find($id);
+
+        if(isset($category)){
+
+            $category->fill($request->except('_token') );
+            $category->save();
+            Alert::toast('Categoria actualizada correctamente!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+        
+        return redirect('categories');
+        
     }
 
     /**
@@ -97,6 +118,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        dd('destroy method');
+        if(isset($id)){
+            $caregory = Category::find($id);
+            $caregory->delete();
+            Alert::toast('Categoria eliminada correctamente!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+        return redirect('categories');
+            
     }
 }

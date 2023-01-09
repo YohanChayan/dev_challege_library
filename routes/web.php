@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,20 +29,22 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [GuestController::class, 'home']);
 
 Route::middleware('auth')->group(function () {
 
-
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::resources([
-        'books' => App\Http\Controllers\BookController::class,
-        'categories' => App\Http\Controllers\CategoryController::class,
-        'users' => App\Http\Controllers\UserController::class,
+        'books' => BookController::class,
+        'categories' => CategoryController::class,
+        'users' => UserController::class,
     ]);
+
+    Route::get('borrows/{id}', [ BookController::class, 'borrows'] )->name('books.borrows');
+    Route::post('borrows', [ BookController::class, 'assignUser'] )->name('books.assignUser');
+
+    Route::post('returnBook', [ BookController::class, 'returnBook'] )->name('books.return');
+
+    
 });
 

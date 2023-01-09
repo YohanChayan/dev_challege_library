@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BookController extends Controller
 {
@@ -41,12 +43,18 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|regex:/^[a-zA-Z\s]*$/',
-            'author' => 'required|regex:/^[a-zA-Z\s]*$/',
-            '_category' => 'required',
+            'name' => 'required|regex:/^([^0-9]*)$/',
+            'author' => 'required|regex:/^([^0-9]*)$/',
+            'category' => 'required',
             'published_date' => 'required',
         ]);
-        dd('success',$request);
+        
+        $newBook = new Book($request->except('_token'));
+        $newBook->save();
+
+        Alert::toast('Nuevo libro agregado correctamente!', 'success');
+        return redirect('books');
+
     }
 
     /**
@@ -86,12 +94,25 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
-            'author' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
-            '_category' => 'required',
+            'name' => 'required|regex:/^([^0-9]*)$/',  //No Numbers
+            'author' => 'required|regex:/^([^0-9]*)$/',  //No Numbers
+            'category' => 'required',
             'published_date' => 'required',
         ]);
-        dd('success', $request);
+        
+        $book = Book::find($id);
+
+        if(isset($book)){
+
+            $book->fill($request->except('_token') );
+            $book->save();
+            Alert::toast('Libro actualizado correctamente!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+        
+        return redirect('books');
+
     }
 
     /**
@@ -102,6 +123,78 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        dd('destroy method book');
+        if(isset($id)){
+            $book = Book::find($id);
+            $book->delete();
+            Alert::toast('Libro eliminado correctamente!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+        return redirect('books');
     }
+
+    public function borrows($id)
+    {
+        $book = Book::find($id);
+
+        if(isset($book)){
+            $users = User::select('id', 'name', 'email')->where('role', '!=', 'admin')->get();
+            return view('books.borrows')->with('book', $book)->with('users', $users);
+        }
+        
+        Alert::toast('Recurso no encontrado!', 'error');
+        return redirect('books');
+    }
+
+    public function assignUser(Request $request)
+    {
+        $request->validate([
+            'book' => 'required|numeric',
+            'user' => 'required|numeric',
+        ]);
+        $book_id = $request->input('book');
+        $user_id = $request->input('user');
+
+        $book = Book::find($book_id);
+
+
+        if(isset($book)){
+
+            $book->user_id = $user_id;
+            $book->save();
+            
+            Alert::toast('Prestamo asignado correctamente!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+
+        return redirect('books');
+    }
+
+    public function returnBook(Request $request)
+    {
+        $request->validate([
+            'Returnbook_id' => 'required|numeric',
+        ]);
+
+        $id = $request->input('Returnbook_id');
+        $book = Book::find($id);
+
+        if(isset($book)){
+            $book->user_id = null;
+            $book->save();
+            Alert::toast('Libro entregado, ya disponible!', 'success');
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+
+
+        return redirect('books');
+
+        // check pending users for borrowing
+
+    }
+
 }

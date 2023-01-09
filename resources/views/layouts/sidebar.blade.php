@@ -6,10 +6,12 @@
 
         <div class="navbar-nav w-100">
             <a href="{{route('home')}}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Inicio</a>
-            <a href="{{route('books.index')}}" class="nav-item nav-link">
+
+            <a href="{{route('books.index')}}" class="nav-item nav-link"> 
                 <i class="fas fa-book me-2"></i>
                 Libros
             </a>
+            
             <a href="{{route('categories.index')}}" class="nav-item nav-link">
                 <i class="fas fa-puzzle-piece me-2"></i>
                 Categorias

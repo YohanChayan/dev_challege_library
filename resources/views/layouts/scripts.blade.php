@@ -8,3 +8,6 @@
 <script src="{{asset('custom/template/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Template Javascript -->
 <script src="{{asset('custom/template/js/main.js')}}"></script>
+
+{{-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

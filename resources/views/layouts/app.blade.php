@@ -22,16 +22,19 @@
         @if(Auth::check())
 
             @include('layouts.main')
-            @yield('scripts')
         @else
 
             @include('layouts.navbar')
-            <main class="py-5">
+            <main class="py-3">
                 @yield('content')
             </main>
             
         @endif
 
+        @include('layouts.scripts')
+        @include('sweetalert::alert')
+
+        @yield('scripts')
     </div>
 </body>
 </html>

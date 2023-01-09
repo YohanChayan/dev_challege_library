@@ -33,7 +33,6 @@
     
     
 </div>
-    @include('layouts.scripts')
     
     {{-- @yield('my_scripts') --}}
         

@@ -1,11 +1,9 @@
-console.log('hello');
-
 function submitBook(event)
 {
     event.preventDefault();
     
     const categoriesTBody_children = document.querySelector('#tBodyCategories').children;
-    const hiddenCategory = document.querySelector('#_category');
+    const hiddenCategory = document.querySelector('#category');
 
     const hiddenCategory_array = []
 
@@ -21,8 +19,6 @@ function submitBook(event)
     }
 
     hiddenCategory.value = hiddenCategory_array.join(', ');
-
-    // document.querySelector('#form').submit();
     event.target.submit();
 }
 
@@ -84,7 +80,7 @@ function addCategory(inputCategoryValue)
 
     CategoriesTBody.append(tr)
 
-    document.querySelector('#category').value = '';
+    document.querySelector('#_category').value = '';
 
 }
 

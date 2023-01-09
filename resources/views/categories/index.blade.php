@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('scripts')
+    
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
     <script src="{{ asset('js/categories/index.js')}} "></script>
 @endsection
 
@@ -12,7 +20,7 @@
         <div class="row g-4 justify-content-between">
 
             <div class="col-md-4">
-                <span class="text-secondary fs-3">Categorias</span>
+                <span class="text-secondary fs-3 fw-bold">Categorias</span>
             </div>
 
             <div class="col-md-4 text-end pt-2">
@@ -39,7 +47,7 @@
 
                                     <div class="row justify-content-evenly g-3">
                                         <div class="col-lg-4">
-                                            <a href="{{route('categories.edit', $cat->id)}}" class="btn btn-primary">
+                                            <a href="{{route('categories.edit', $cat->id)}}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                                                 <span>
                                                     <i class="fas fa-edit"></i>
                                                 </span>
@@ -47,7 +55,7 @@
                                         </div>
 
                                         <div class="col-lg-4">
-                                            <a onclick="submitRemoveCat({{$cat->id}})" class="btn btn-danger">
+                                            <a onclick="toTrashCat({{$cat->id}})" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                                                 <span>
                                                     <i class="fas fa-trash"></i>
                                                 </span>

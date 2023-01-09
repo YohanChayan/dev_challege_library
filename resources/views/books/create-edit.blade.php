@@ -38,7 +38,7 @@
                         @else
                             <h2 class="mb-4 text-secondary text-center">Nuevo libro</h2>
 
-                            <form action="{{route('books.store')}}" method="POST">
+                            <form onsubmit="submitBook(event)" action="{{route('books.store')}}" method="POST">
                         @endif
                             
                             @csrf
@@ -62,7 +62,7 @@
                                     
                                     <div class="row gx-2">
                                         <div class="col-lg-10">
-                                            <input list="categories" name="category" id="category" class="form-control"
+                                            <input list="categories" name="_category" id="_category" class="form-control"
                                             pattern="{{implode('|', $categories)}}"
                                             title='Debe eligir una categoria existente'>
                                             <datalist id="categories">
@@ -73,7 +73,7 @@
                                                 </datalist>
                                         </div>
                                         <div class="col-lg-2 my-lg-0 my-2 text-center">
-                                            <a class="btn btn-primary" onclick="AddCheckCategory(document.querySelector('#category'))">
+                                            <a class="btn btn-primary" onclick="AddCheckCategory(document.querySelector('#_category'))">
                                                 <i class="far fa-plus"></i>
                                             </a>
                                         </div>
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="_category" id="_category">
+                            <input type="hidden" name="category" id="category">
 
                             <div class="row justify-content-center">
                                 <div class="col-md-4 mx-auto text-center">

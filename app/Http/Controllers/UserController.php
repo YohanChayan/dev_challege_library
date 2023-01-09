@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -14,10 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::
-        // where('role', '!=', 'admin')
-        // ->
-        paginate(5);
+        $users = User::with('books')->where('role', '!=', 'admin')->paginate(5);
 
         return view('users.index')->with('users', $users);
     }
@@ -40,7 +38,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|regex:/^([^0-9]*)$/', //no numbers
+            'email' => 'required|unique:users,email',
+        ]);
+
+        $newUser = new User();
+
+        $hard_password = bcrypt(bcrypt('1qwsdc6yhjiopl')); //avoid unnecessary access
+
+        $newUser->name = $request->input('name');
+        $newUser->email = $request->input('email');
+        $newUser->password = $hard_password;
+        $newUser->role = 'none';
+        $newUser->save();
+        
+        Alert::toast('Nuevo usuario añadido correctamente!', 'success');
+        return redirect('users');
+        
     }
 
     /**
@@ -66,8 +81,10 @@ class UserController extends Controller
 
         if(!is_null($user))
             return view('users.create-edit')->with('user', $user);
-        else
+        else{
+            Alert::toast('Recurso no encontrado!', 'error');
             return redirect()->back();
+        }
     }
 
     /**
@@ -77,9 +94,24 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|regex:/^([^0-9]*)$/',
+            'email' => 'required|unique:users,email',
+        ]);
+
+        $user = User::find($id);
+
+        if(isset($user)){
+            $user->fill( $request->except('_token') );
+            $user->save();
+            Alert::toast('Usuario actualizado correctamente!', 'success');
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+        return redirect('users');
+
     }
 
     /**
@@ -90,7 +122,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        
-        dd('destroy method user');
+        if(isset($id)){
+            $user = User::find($id);
+            if(count($user->books) > 0)
+                Alert::toast('Este usuario posee prestamos!', 'error');
+            else{
+                $user->delete();
+                Alert::toast('Usuario eliminado correctamente!', 'success');
+            }
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+        return redirect('users');
     }
 }

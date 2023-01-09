@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('scripts')
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
     <script src="{{asset('js/users/index.js')}}"></script>
 @endsection
 
@@ -11,12 +19,12 @@
 
         <div class="row g-4 justify-content-between">
 
-            <div class="col-md-4">
-                <span class="text-secondary fs-3">Users</span>
+            <div class="col-lg-4">
+            <span class="text-secondary fs-3 fw-bold">Usuarios</span>
             </div>
 
-            <div class="col-md-4 text-end pt-2">
-                <a href="{{route('users.create')}}" class="fs-5">Add new user</a>
+            <div class="col-lg-4 text-start text-lg-end pt-2">
+                <a href="{{route('users.create')}}" class="fs-5">Añadir nuevo usuario</a>
             </div>
 
             <div class="table-responsive mt-4">
@@ -26,7 +34,7 @@
                             <th scope="col" class="text-center text-secondary">ID</th>
                             <th scope="col" class="text-center text-secondary">Nombre</th>
                             <th scope="col" class="text-center text-secondary">Correo</th>
-                            <th scope="col" class="text-center text-secondary">Prestamos</th>
+                            <th scope="col" class="text-center text-secondary">Prestamos actuales</th>
                             <th scope="col" class="text-center text-secondary">Acciones</th>
                         </tr>
                     </thead>
@@ -37,11 +45,20 @@
                                 <td>{{$user->id}}</td>
                                 <td> {{$user->name}} </td>
                                 <td> {{$user->email}} </td>
-                                <td> Prestamo estatus </td>
+                                <td class="text-center pt-3"> 
+                                    <span class="text-secondary fw-bold">
+                                        @if(count($user->books) > 0)
+                                            <span class="text-danger">{{count($user->books)}}</span>
+                                        @else
+                                            <span class="text-primary">{{count($user->books)}}</span>
+                                        @endif
+                                    </span>
+                                    
+                                </td>
                                 <td>
                                     <div class="row justify-content-evenly g-3">
                                         <div class="col-lg-4">
-                                            <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary">
+                                            <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                                                 <span>
                                                     <i class="fas fa-edit"></i>
                                                 </span>
@@ -49,7 +66,7 @@
                                         </div>
 
                                         <div class="col-lg-4">
-                                            <a onclick="submitRemoveUser({{$user->id}})" class="btn btn-danger">
+                                            <a onclick="toTrashUser({{$user->id}})" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                                                 <span>
                                                     <i class="fas fa-trash"></i>
                                                 </span>
