@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $categories = Category::paginate(5);
+        return view('categories.index')->with('categories', $categories);
     }
 
     /**
@@ -35,7 +36,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
+            'description' => 'required',
+        ]);
+
+        dd('success', $request);
     }
 
     /**
@@ -55,9 +61,16 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::find($id);
+
+        if($category)
+            return view('categories.create-edit')->with('category', $category);
+        else
+            return redirect()->back();
+
+
     }
 
     /**
@@ -67,9 +80,13 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|not_regex:/^[0-9]+$/', //No Numbers
+            'description' => 'required',
+        ]);
+        dd('update success', $request);
     }
 
     /**
@@ -78,8 +95,8 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        dd('destroy method');
     }
 }

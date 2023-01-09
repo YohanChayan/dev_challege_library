@@ -12,17 +12,7 @@
 
     {{-- Favicon --}}
     <link rel="shortcut icon" type="image/png" href="{{ asset('custom/template/img/favicon.png') }}">
-    <link rel="shortcut icon" sizes="192x192" href="{{ asset('custom/template/img/favicon.png') }}"
-
-    <!-- Scripts -->
-    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-
-    <!-- Fonts -->
-    {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
-    {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
-
-    <!-- Styles -->
-    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    <link rel="shortcut icon" sizes="192x192" href="{{ asset('custom/template/img/favicon.png') }}">
 
     @include('layouts.customTheme')
 
@@ -32,13 +22,14 @@
         @if(Auth::check())
 
             @include('layouts.main')
+            @yield('scripts')
         @else
 
             @include('layouts.navbar')
             <main class="py-5">
                 @yield('content')
             </main>
-
+            
         @endif
 
     </div>

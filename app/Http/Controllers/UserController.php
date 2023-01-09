@@ -14,7 +14,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $users = User::
+        // where('role', '!=', 'admin')
+        // ->
+        paginate(5);
+
+        return view('users.index')->with('users', $users);
     }
 
     /**
@@ -55,9 +60,14 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        if(!is_null($user))
+            return view('users.create-edit')->with('user', $user);
+        else
+            return redirect()->back();
     }
 
     /**
@@ -78,8 +88,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        
+        dd('destroy method user');
     }
 }

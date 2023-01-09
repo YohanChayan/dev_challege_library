@@ -27,11 +27,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resources([
-    'books' => App\Http\Controllers\BookController::class,
-    'categories' => App\Http\Controllers\CategoryController::class,
-    'users' => App\Http\Controllers\UserController::class,
-]);
+
+Route::middleware('auth')->group(function () {
+
+
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resources([
+        'books' => App\Http\Controllers\BookController::class,
+        'categories' => App\Http\Controllers\CategoryController::class,
+        'users' => App\Http\Controllers\UserController::class,
+    ]);
+});
 

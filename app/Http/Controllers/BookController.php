@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -14,9 +15,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
-
-        return view('books.index');
+        $books = Book::paginate(5);
+        return view('books.index')->with('books', $books);
     }
 
     /**
@@ -26,7 +26,10 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create-edit');
+        $categories = Category::select('name')->pluck('name')->toArray();
+        
+        return view('books.create-edit')
+        ->with('categories', $categories);
     }
 
     /**
@@ -37,7 +40,13 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|regex:/^[a-zA-Z\s]*$/',
+            'author' => 'required|regex:/^[a-zA-Z\s]*$/',
+            '_category' => 'required',
+            'published_date' => 'required',
+        ]);
+        dd('success',$request);
     }
 
     /**
@@ -60,7 +69,11 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::find($id);
-        return view('books.create-edit')->with('book', $book);
+        
+        $categories = Category::select('name')->pluck('name')->toArray();
+        return view('books.create-edit')
+        ->with('book', $book)
+        ->with('categories', $categories);
     }
 
     /**
@@ -70,9 +83,15 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
+            'author' => 'required|not_regex:/^[0-9]+$/',  //No Numbers
+            '_category' => 'required',
+            'published_date' => 'required',
+        ]);
+        dd('success', $request);
     }
 
     /**
@@ -81,8 +100,8 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+        dd('destroy method book');
     }
 }
