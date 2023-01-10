@@ -2,14 +2,14 @@
 
 ## Acerca del proyecto
 
-Para ejecutar este proyecto en local se debe:
+Para ejecutar este proyecto en local se debe seguir los siguientes pasos:
 
 - composer install
-- crear el archivo .env atraves del ejemplo: .env.example y configurar parametros 
+- crear el archivo .env a traves del ejemplo: .env.example y configurar parametros 
 - ejecutar php artisan key:generate para generar la llave unica
 - ejecutar las migraciones y datos de prueba con php artisan migrate --seed
 
-Se utilizo PHP v7.4 Laravel 8
+Se utilizo PHP v7.4 - Laravel 8
 
 ## Acerca del proyecto
 
