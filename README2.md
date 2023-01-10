@@ -5,8 +5,9 @@
 Proyecto Desarrollado por desafío de código, en el cual se desarrollaron vistas, Programación BackEnd con Laravel, creacion y relaciones en bases de datos. Consiste en sistema administrativo para librerias en el cual se administran los libros, categorias, y usuarios que pueden hacer prestamos, asi como tambien el constante monitoreo a cada uno de los prestmos realizados.
 
 Como usuario administrativo se tiene un metodo de autenticacion con las siguientes credenciales:
-    <p align="center">
-        Email: creeartelo@gmail.com
-        Pass: cre123
-    </p>
+    <p align="center"> Email: creeartelo@gmail.com</p>
+    <p align="center"> Pass: cre123 </p>
+
+Los usuarios generales son aquellos usuarios publicos que pueden ver el listado de libros existentes, asi como tambien el estatus o disponibilidad, en caso de que un usuario quiera un libro que no esta disponible, este puede pedir que se le envie un mensaje de alerta (simula integracion con Apis ) cuando dicho libro se encuentre disponible nuevamente!. Para esto ultimo se utilizo los events y listener de Laravel --Probado con correos en entorno desarrollado con MailTrap.
+    
 
