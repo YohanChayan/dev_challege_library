@@ -1,21 +1,13 @@
 @extends('layouts.app')
 
 @section('scripts')
-
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
-
-    <script src="{{asset('js/books/index.js')}} "></script>
+    <script src="{{asset('js/books/guest.js')}} "></script>
 @endsection
 
 @section('content')
 
 
-    <div class="bg-light container-fluid my-3 p-4">
+    <div class="bg-light container my-3 p-4">
         
         <div class="row g-4 justify-content-between">
 
@@ -28,14 +20,8 @@
                     </ul>
                 </div>
             @endif
-
-            <div class="col-md-4">
-                <span class="text-secondary fs-3 fw-bold">Libros</span>
-            </div>
-
-            <div class="col-md-4 text-end pt-2">
-                <a href="{{route('books.create')}}" class="fs-5">Agregar nuevo libro</a>
-            </div>
+            
+            <p class="text-secondary fs-2 fw-bold text-center">Libros existentes</p>
 
             <div class="table-responsive mt-4">
                 <table class="table text-start -middle table-bordered  mb-0">
@@ -67,48 +53,27 @@
                                 </td>
 
                                 <td>
-                                    <div class="row justify-content-evenly g-3">
-                                        @if( is_null($book->user_id) )
-
-                                            <div class="col-lg-3">
-                                                <a href="{{route('books.edit', $book->id)}}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="col-lg-3">
-                                                <a onclick="toTrashBook({{$book->id}})" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </div>
-
-                                            <div class="col-lg-3">
-                                                <a href="{{route('books.borrows', $book->id)}}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Prestamo">
-                                                    <i class="fas fa-hand-paper"></i>
+                                    <div class="row justify-content-center g-3">
+                                        @if( !is_null($book->user_id) )
+                                        
+                                            <div class="col-lg-6">
+                                                <a onclick="notifyme({{$book->id}})" class="btn btn-success">
+                                                    Notificar Disponibilidad
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="col-lg-3">
-                                                <a onclick="ReturnBook({{$book->id}})" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Regresar">
-                                                    <i class="fas fa-check"></i>
+                                            <div class="col-lg-6 text-center">
+                                                <a style="cursor: default" class="btn btn-secondary">
+                                                    <i class="fas fa-ban"></i>
                                                 </a>
                                             </div>
+
                                         @endif
                                     </div>
                                 </td>
 
                             </tr>
                         @endforeach
-
-                        <form id="deleteBookForm" action="#" method="POST" class="d-none">
-                            @csrf
-                            @method('DELETE')
-                        </form>    
-
-                        <form id="returnBookForm" action="{{route('books.return')}} " method="POST" class="d-none">
-                            <input type="hidden" name="Returnbook_id" id="Returnbook_id">
-                            @csrf
-                        </form>    
 
                     </tbody>
                 </table>
@@ -120,6 +85,50 @@
             </div>
 
         </div>
+
+
+        <!-- Modal -->
+<div class="modal fade" id="InsertGuestDataModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{route('books.notifyme')}} " method="POST" class="border p-4 bg-light">
+      <div class="modal-body">
+            @csrf
+            <div class="row mb-4">
+                <label for="email" class="col-sm-2 col-form-label">Correo</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" name="email" id="email">  
+                    <span class="small my-2">Para esta acción, debe primero tener un correo válido</span>
+                </div>
+            </div>
+            
+            <input type="hidden" name="book" id="book">
+
+            <div class="form-floating">
+                <select class="form-select" name="notify_via" id="notify_via">
+                    <option selected value=""> - </option>
+                    <option value="whatsapp"> Whatsapp </option>
+                    <option value="telegram"> Telegram </option>
+                    <option value="facebook_messenger"> Facebook Messenger </option>
+
+                </select>
+                <label for="user">Seleccione Medio de notificacion</label>
+
+            </div>
+
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 
         
     </div>

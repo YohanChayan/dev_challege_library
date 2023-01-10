@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\NotifyMe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+
+use App\Events\MessageSender;
 
 class BookController extends Controller
 {
@@ -183,8 +186,31 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if(isset($book)){
+            
+            // check pending users for borrowing (event)
+            $pending_users = NotifyMe::with(['book', 'user'])->where('book_id',$book->id)->get();
+            foreach($pending_users as $u){
+                
+                if($u->book_id == $book->id){
+                    // $source = User::find($u->user_id)->email;
+                    $source = $u->source;
+
+                    $record_info = new NotifyMe();
+                    $record_info->book_id = $u->book_id;
+                    $record_info->user_id = $u->user_id;
+                    $record_info->notify_via = $u->notify_via;
+                    $record_info->source = $source;
+
+                    // Create Event (Notify User that book is available) --tested with email
+                    event( new MessageSender($record_info) );
+                }
+
+            }
+
+
             $book->user_id = null;
             $book->save();
+
             Alert::toast('Libro entregado, ya disponible!', 'success');
         }else
             Alert::toast('Recurso no encontrado!', 'error');
@@ -192,9 +218,51 @@ class BookController extends Controller
 
 
         return redirect('books');
+    }
 
-        // check pending users for borrowing
+    public function booklist()
+    {
+        $books = Book::paginate(5);
+        return view('books.guest-list')->with('books', $books);
+    }
 
+    public function notify_me(Request $request)
+    {
+        $request->validate([
+            'book' => 'required|numeric',
+            'email' => 'required|exists:users,email',
+            'notify_via' => 'required',
+        ]);
+
+        $book = Book::find( $request->input('book') );
+        $user = User::where('email', $request->input('email'))->first();
+
+        if(isset($book) && isset($user)){
+
+            $alreadyExist_record = NotifyMe::where('user_id', $user->id)
+            ->where('book_id', $book->id)
+            ->count();
+
+            if($alreadyExist_record > 0){
+                Alert::toast('Usted ya posee notificacion!', 'error');
+                return back();
+            }
+
+            $_source = '3344556677'; //testing
+
+            $newRecordToNotify = new NotifyMe();
+            $newRecordToNotify->book_id = $book->id;
+            $newRecordToNotify->user_id = $user->id;
+            $newRecordToNotify->notify_via = $request->input('notify_via') ;
+            $newRecordToNotify->source = $_source;
+            $newRecordToNotify->save();
+            Alert::toast('Recordatorio ha sido establecido!', 'success');
+
+        }else
+            Alert::toast('Recurso no encontrado!', 'error');
+
+        return back();
+        
     }
 
 }

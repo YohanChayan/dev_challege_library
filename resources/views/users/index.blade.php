@@ -45,7 +45,7 @@
                                 <td>{{$user->id}}</td>
                                 <td> {{$user->name}} </td>
                                 <td> {{$user->email}} </td>
-                                <td class="text-center pt-3"> 
+                                <td class="text-center pt-3" width="20%"> 
                                     <span class="text-secondary fw-bold">
                                         @if(count($user->books) > 0)
                                             <span class="text-danger">{{count($user->books)}}</span>

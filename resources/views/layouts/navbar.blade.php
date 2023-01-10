@@ -6,9 +6,9 @@
 
 <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-custom-2">
     <div class="container">
-        {{-- <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a> --}}
+        <a class="navbar-brand me-4" href="{{ url('/') }}">
+            <span class="text-secondary fw-bold">Inicio</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -17,7 +17,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{route('books.list')}} ">
                         <span class="fs-5"> Ver listado de libros</span>
                     </a>
                 </li>

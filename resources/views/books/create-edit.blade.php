@@ -83,7 +83,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="published_date" class="col-sm-2 col-form-label">Published Date</label>
+                                <label for="published_date" class="col-sm-2 col-form-label">Fecha de publicación </label>
                                 <div class="col-sm-10">
                                     <input type="date" class="form-control" id="published_date" name="published_date" value="{{old('published_date',$book->published_date ?? '') }}">
                                 </div>

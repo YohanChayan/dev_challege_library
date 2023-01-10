@@ -42,9 +42,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('borrows/{id}', [ BookController::class, 'borrows'] )->name('books.borrows');
     Route::post('borrows', [ BookController::class, 'assignUser'] )->name('books.assignUser');
-
+    
     Route::post('returnBook', [ BookController::class, 'returnBook'] )->name('books.return');
-
+    
     
 });
+
+Route::get('booklist', [ BookController::class, 'booklist'] )->name('books.list');
+Route::post('notifyme', [ BookController::class, 'notify_me'] )->name('books.notifyme');
 

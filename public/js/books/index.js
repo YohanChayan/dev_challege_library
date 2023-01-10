@@ -1,4 +1,24 @@
 
+function ReturnBook(bookID)
+{
+    Swal.fire({
+        title: '¿Este libro pasará a estar disponible, desea continuar?',
+        text: "Esta acción no se puede revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar!',
+        cancelButtonText: 'Cancelar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            
+            if(bookID)
+                submitReturnBookForm(bookID);
+        }
+      })
+}
+
 function toTrashBook(bookID)
 {
     Swal.fire({

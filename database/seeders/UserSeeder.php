@@ -21,5 +21,32 @@ class UserSeeder extends Seeder
             'email' => 'creeartelo@gmail.com',
         ]);
 
+        DB::table('users')->insert([
+            'name' => 'Yohan Chayan',
+            'password' => bcrypt('iygahksjnoeubki2u3u49823uobfjnaiuyighjnkm'),
+            'role' => 'none',
+            'email' => 'chayanyhn@gmail.com',
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Carlos Eduardo',
+            'password' => bcrypt('iygahksjnoeubki2u3u49823uobfjnaiuyighjnkm'),
+            'role' => 'none',
+            'email' => 'CarlosEduardo@gmail.com',
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Jonathan Zerquera',
+            'password' => bcrypt('iygahksjnoeubki2u3u49823uobfjnaiuyighjnkm'),
+            'role' => 'none',
+            'email' => 'jzerquera@gmail.com',
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Santiago Moreno',
+            'password' => bcrypt('iygahksjnoeubki2u3u49823uobfjnaiuyighjnkm'),
+            'role' => 'none',
+            'email' => 'SantiMo@gmail.com',
+        ]);
+        
+
     }
 }

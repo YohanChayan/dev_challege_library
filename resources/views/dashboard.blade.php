@@ -32,7 +32,8 @@
 
     <div class="col-lg-8 mx-auto">
         <div class="alert alert-secondary" role="alert">
-            mas informacion acerca de las funcionalidades
+            En la integracion se utilizaron los events y listener de Laravel, de manera que cuando un libro esesta disponible, se le enviará un mensage al usuario que desea dicho libro. 
+            <p class="fw-bold">Se hicieron pruebas con envios de correo, con Mailtrap!</p>
         </div>
     </div>
 
