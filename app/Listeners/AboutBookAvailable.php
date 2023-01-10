@@ -55,10 +55,5 @@ class AboutBookAvailable
             // Integration with Facebook Messenger
         }
 
-
-
-
-        // $record = NotifyMe::where('user_id', $event->User->user_id)->first();
-        // $record->delete();
     }
 }

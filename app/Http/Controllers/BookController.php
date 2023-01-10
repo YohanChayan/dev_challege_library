@@ -248,7 +248,7 @@ class BookController extends Controller
                 return back();
             }
 
-            $_source = '3344556677'; //testing
+            $_source = $user->email; //testing
 
             $newRecordToNotify = new NotifyMe();
             $newRecordToNotify->book_id = $book->id;

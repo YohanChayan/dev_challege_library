@@ -114,6 +114,7 @@
                     <option value="whatsapp"> Whatsapp </option>
                     <option value="telegram"> Telegram </option>
                     <option value="facebook_messenger"> Facebook Messenger </option>
+                    <option value="email"> Correo </option>
 
                 </select>
                 <label for="user">Seleccione Medio de notificacion</label>
