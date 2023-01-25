@@ -20,5 +20,7 @@ Como usuario administrativo se tiene un metodo de autenticacion con las siguient
     <p align="center"> Pass: cre123 </p>
 
 Los usuarios generales son aquellos usuarios publicos que pueden ver el listado de libros existentes, asi como tambien el estatus o disponibilidad, en caso de que un usuario quiera un libro que no esta disponible, este puede pedir que se le envie un mensaje de alerta (simula integracion con Apis ) cuando dicho libro se encuentre disponible nuevamente!.
+
+Sistema personal utilizado para aprender acerca de las diferentes herramientas que existen con Laravel >= 8.
     
 
